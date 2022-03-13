@@ -42,6 +42,9 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
     PlayerInputComponent->BindAxis("Turn", this, &AFPSCharacter::AddControllerYawInput);
     PlayerInputComponent->BindAxis("LookUp", this, &AFPSCharacter::AddControllerPitchInput);
 
+    // Bind jump to spacebar
+    PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AFPSCharacter::StartJump);
+    PlayerInputComponent->BindAction("Jump", IE_Released, this, &AFPSCharacter::StopJump);
 }
 
 void AFPSCharacter::MoveForward(float value) {
@@ -58,3 +61,10 @@ void AFPSCharacter::MoveRight(float value) {
     AddMovementInput(direction, value);
 }
 
+void AFPSCharacter::StartJump() {
+    bPressedJump = true;
+}
+
+void AFPSCharacter::StopJump() {
+    bPressedJump = false;
+}

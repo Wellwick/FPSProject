@@ -33,4 +33,10 @@ public:
     // Handles input for moving right and left
     UFUNCTION()
     void MoveRight(float value);
+
+    UFUNCTION()
+    void StartJump();
+
+    UFUNCTION()
+    void StopJump();
 };
