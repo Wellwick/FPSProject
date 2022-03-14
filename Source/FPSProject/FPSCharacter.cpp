@@ -37,7 +37,6 @@ AFPSCharacter::AFPSCharacter()
     FPSMesh->CastShadow = false;
 
     // Hide the base mesh
-    GetMesh()->SetOwnerNoSee(true);
     check(GetMesh() != nullptr);
 }
 
@@ -50,6 +49,12 @@ void AFPSCharacter::BeginPlay()
 
     // Display a six second debug message
     GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Red, TEXT("We are using FPSCharacter."));
+    FString string = GetMesh()->GetFullName();
+    GEngine->AddOnScreenDebugMessage(-1, 30.0f, FColor::Red, string);
+    GetMesh()->GetFName().ToString(string);
+    GEngine->AddOnScreenDebugMessage(-1, 30.0f, FColor::Red, string);
+
+    GetMesh()->SetOwnerNoSee(true);
 }
 
 // Called every frame
