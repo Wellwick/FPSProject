@@ -9,6 +9,36 @@ AFPSCharacter::AFPSCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+    // Create the first person camera component
+    FPSCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+    check(FPSCameraComponent != nullptr);
+
+    // Attach camera to capsule component
+    FPSCameraComponent->SetupAttachment(CastChecked<USceneComponent, UCapsuleComponent>(GetCapsuleComponent()));
+
+    // Position camera slightly above eyes
+    FPSCameraComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f + BaseEyeHeight));
+
+    // Enable the pawn to control camera rotation
+    FPSCameraComponent->bUsePawnControlRotation = true;
+
+    // Create a first person mesh component for the owning player
+    FPSMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FirstPersonMesh"));
+    check(FPSMesh != nullptr);
+
+    // Only the owning player can see the mesh
+    FPSMesh->SetOnlyOwnerSee(true);
+
+    // Attach the FPS mesh to the FPS camera
+    FPSMesh->SetupAttachment(FPSCameraComponent);
+
+    // Disable some environmental shadows to preserve the illusion of a single mesh
+    FPSMesh->bCastDynamicShadow = false;
+    FPSMesh->CastShadow = false;
+
+    // Hide the base mesh
+    GetMesh()->SetOwnerNoSee(true);
+    check(GetMesh() != nullptr);
 }
 
 // Called when the game starts or when spawned
